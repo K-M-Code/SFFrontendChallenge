@@ -20,9 +20,8 @@ npm run dev
 npm run test
 ```
 
-## Submission Instructions
+## Screenshot
 
-- ⏱️ **Maximum time: 120 minutes**
-- 📦 Send your result as a `.zip` or share a GitHub repo link to
+![Screenshot](./screenshot1.jpg)
 
 ---
