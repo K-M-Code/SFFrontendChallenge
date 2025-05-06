@@ -1,9 +1,9 @@
 import React from "react";
-import { DroneTelemetry, isDroneInNoFlyZone } from '@/lib/droneUtils';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/ui/components/atoms/shadcn/card";
-import DroneData from '@/ui/components/molecules/DroneData';
-import StatusBadge from '@/ui/components/atoms/StatusBadge';
-import { cn } from "@/lib/utils";
+import { DroneTelemetry, isDroneInNoFlyZone } from '../../../lib/droneUtils';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../atoms/shadcn/card";
+import DroneData from './DroneData';
+import StatusBadge from '../atoms/StatusBadge';
+import { cn } from "../../../lib/utils";
 
 /**
  * @interface DroneCardProps
@@ -28,13 +28,13 @@ const DroneCard: React.FC<DroneCardProps> = ({ telemetry }) => {
 
   return (
     <Card className={cn(
-      "drone-card w-full max-w-sm transition-all duration-300 ease-in-out",
+      "drone-card w-full max-w-sm transition-all duration-300 ease-in-out hover:scale-105 bg-black",
       isInNoFlyZone && "drone-card--no-fly-zone bg-red-100 border-red-500 ring-2 ring-red-500"
     )}>
       <CardHeader className="drone-card__header pb-2">
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="drone-card__id text-lg">Drone ID: {telemetry.id}</CardTitle>
+            <CardTitle className="drone-card__id text-lg text-white underline underline-offset-4 italic">Drone ID: {telemetry.id}</CardTitle>
             {isInNoFlyZone && (
               <CardDescription className="drone-card__warning text-red-700 font-semibold">
                 WARNING: In No-Fly Zone!

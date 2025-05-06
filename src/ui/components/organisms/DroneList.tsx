@@ -1,5 +1,5 @@
-import DroneCard from '@/ui/components/organisms/DroneCard';
-import { DroneTelemetry } from '@/lib/droneUtils';
+import DroneCard from '../molecules/DroneCard';
+import { DroneTelemetry } from '../../../lib/droneUtils';
 import React from 'react';
 
 /**

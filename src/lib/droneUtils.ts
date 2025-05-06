@@ -1,21 +1,24 @@
-// src/utils/droneTelemetry.ts
+import { z } from 'zod';
+
 
 /**
  * Enumerates the possible status types of a drone.
  * @typedef {"IDLE" | "MOVING" | "JAMMED"} DroneStatus
  */
-export type DroneStatus = "IDLE" | "MOVING" | "JAMMED";
+export const DroneStatusEnum = z.enum(["IDLE", "MOVING", "JAMMED"]);
+export type DroneStatus = z.infer<typeof DroneStatusEnum>;
 
 /**
  * Represents geographic coordinates with latitude and longitude.
  * @typedef {Object} Coordinates
- * @property {number} lat - Latitude in decimal degrees.
- * @property {number} lng - Longitude in decimal degrees.
+ * @property {number} latitude - Latitude in decimal degrees.
+ * @property {number} longitude - Longitude in decimal degrees.
  */
-export interface Coordinates {
-  latitude: number;
-  longitude: number;
-}
+export const CoordinatesSchema = z.object({
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+});
+export type Coordinates = z.infer<typeof CoordinatesSchema>;
 
 /**
  * Represents telemetry data for a drone, including its location, movement, and signal information.
@@ -28,38 +31,42 @@ export interface Coordinates {
  * @property {number} frequency - Frequency of the drone's transmission in megahertz.
  * @property {DroneStatus} status - Current status of the drone.
  */
-export interface DroneTelemetry {
-  id: string; // unique identifier for the drone
-  coordinates: Coordinates; // latitude and longitude
-  altitude: number; // meters
-  speed: number; // km/hr
-  signalStrength: number; // db
-  frequency: number; // mhz
-  status: DroneStatus; // idle, moving, jammed
-}
+
+
+// Define the Zod schema for DroneTelemetry
+export const DroneTelemetrySchema = z.object({
+  id: z.string(),
+  coordinates: CoordinatesSchema,
+  altitude: z.number().nonnegative(),
+  speed: z.number().nonnegative(),
+  signalStrength: z.number(),
+  frequency: z.number().nonnegative(),
+  status: DroneStatusEnum,
+});
+export type DroneTelemetry = z.infer<typeof DroneTelemetrySchema>;
 
 /**
  * Validates a `DroneTelemetry` object.
  * @param telemetry - Telemetry data to validate.
  * @returns True if the telemetry data is valid, false otherwise.
  */
-function isValidDroneTelemetry(telemetry: DroneTelemetry | null | undefined): boolean {
-    if (!telemetry) return false;
-    const { coordinates, altitude, speed, signalStrength, frequency } = telemetry;
-    if (!coordinates || !isValidCoordinates(coordinates)) return false;
-    if (altitude < 0 || speed < 0 || signalStrength < 0 || frequency < 0) return false;
-    return true;
-   }
+export function isValidDroneTelemetry(telemetry: DroneTelemetry | null | undefined): boolean {
+  if (!telemetry) return false;
+  const { coordinates, altitude, speed, signalStrength, frequency } = telemetry;
+  if (!coordinates || !isValidCoordinates(coordinates)) return false;
+  if (altitude < 0 || speed < 0 || signalStrength < 0 || frequency < 0) return false;
+  return true;
+}
    
    /**
     * Validates a `Coordinates` object.
     * @param coordinates - Coordinates to validate.
     * @returns True if the coordinates are valid, false otherwise.
     */
-   function isValidCoordinates(coordinates: Coordinates): boolean {
+   export function isValidCoordinates(coordinates: Coordinates): boolean {
     const { latitude, longitude } = coordinates;
     return latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
-   }
+  }
    
 
 

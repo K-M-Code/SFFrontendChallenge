@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge } from "@/ui/components/atoms/shadcn/badge";
+import { Badge } from "../atoms/shadcn/badge";
 import { DroneStatus } from "@/lib/droneUtils";
 
 /**
